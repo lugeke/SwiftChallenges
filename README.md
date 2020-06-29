@@ -1,3 +1,3 @@
 # SwiftChallenges
 
-A description of this package.
+Answers to  <Swift Coding Challenges> book of Paul Hudson

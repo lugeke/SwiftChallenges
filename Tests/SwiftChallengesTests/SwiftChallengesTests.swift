@@ -82,6 +82,15 @@ final class SwiftChallengesTests: XCTestCase {
         XCTAssertEqual(C12("flip flap flop"), "fl")
         XCTAssertEqual(C12("flip"), "")
     }
+    
+    func testC13() {
+        XCTAssertEqual(C13("aabbcc"), "a2b2c2")
+        XCTAssertEqual(C13("aaabaaabaaa"), "a3b1a3b1a3")
+        XCTAssertEqual(C13("aaAAaa"), "a2A2a2")
+        XCTAssertEqual(C13("aaAAab"), "a2A2a1b1")
+        XCTAssertEqual(C13("baAAab"), "b1a1A2a1b1")
+        XCTAssertEqual(C13(""), "")
+    }
 
 
     static var allTests = [

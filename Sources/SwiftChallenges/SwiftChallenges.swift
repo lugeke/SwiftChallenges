@@ -160,3 +160,26 @@ func C12(_ str: String) -> String {
     
     return result
 }
+
+
+func C13(_ str: String) -> String {
+    guard var previous = str.first else {
+        return ""
+    }
+    var result = ""
+    var count = 1
+    for char in str.dropFirst() {
+        if char == previous {
+            count += 1
+        } else {
+            result.append("\(previous)\(count)")
+            count = 1
+            previous = char
+        }
+        
+    }
+  
+    result.append("\(previous)\(count)")
+    
+    return result
+}

@@ -91,6 +91,46 @@ final class SwiftChallengesTests: XCTestCase {
         XCTAssertEqual(C13("baAAab"), "b1a1A2a1b1")
         XCTAssertEqual(C13(""), "")
     }
+    
+    func testC14() {
+        XCTAssertEqual(C14("a"), ["a"])
+        XCTAssertEqual(Set(C14("ab")), ["ab", "ba"])
+        XCTAssertEqual(Set(C14("abc")), ["abc", "acb", "bac", "bca", "cab", "cba"])
+        XCTAssertEqual(C14("wombat").count, 720)
+    }
+    
+    
+    func testC15() {
+        XCTAssertEqual(c15("Swift Coding Challenges"), "tfiwS gnidoC segnellahC")
+        XCTAssertEqual(c15("The quick brown fox"), "ehT kciuq nworb xof")
+    }
+    
+    
+    func testC18() {
+        XCTAssertEqual(c18(base: 4, pow: 3), 64)
+        XCTAssertEqual(c18(base: 2, pow: 8), 256)
+    }
+    
+    func testC20() {
+        XCTAssertTrue(c20(11))
+        XCTAssertTrue(c20(13))
+        XCTAssertTrue(c20(16777259))
+        
+        XCTAssertFalse(c20(4))
+        XCTAssertFalse(c20(9))
+        
+        XCTAssertFalse(c20(1))
+        
+        XCTAssertTrue(c20(3))
+        XCTAssertTrue(c20(2))
+    }
+    
+    func testC21() {
+        XCTAssertTrue(c21(12) == (17, 10))
+        XCTAssertTrue(c21(28) == (35, 26))
+        XCTAssertTrue(c21(1) == (2, nil))
+        XCTAssertTrue(c21(3) == (5, nil))
+    }
 
 
     static var allTests = [

@@ -183,3 +183,100 @@ func C13(_ str: String) -> String {
     
     return result
 }
+
+extension Array {
+    
+    func permutations() -> [[Element]] {
+        var result = [[Element]]()
+        var ary = self
+        ary.permutations(start: 0, result: &result)
+        return result
+    }
+    
+    mutating func permutations(start: Int, result: inout [[Element]]){
+        if start == count - 1 {
+            result.append(self)
+            return
+        }
+        
+        for i in start ..< count {
+            swapAt(i, start)
+            permutations(start: start+1, result: &result)
+            swapAt(i, start)
+        }
+    }
+}
+
+func C14(_ str: String) -> [String] {
+    let ary = Array(str)
+    
+    return  ary.permutations().map { String.init($0) }
+}
+
+
+func c15(_ str: String) -> String {
+    let words = str.split(separator: " ").map { String($0.reversed())}
+    return words.joined(separator: " ")
+}
+
+
+func c18(base: Int, pow: Int) -> Int {
+    if pow == 1 { return base}
+    
+    var result = c18(base: base, pow: pow / 2)
+    
+    result *= result
+    
+    if pow % 2 == 1 {
+       result *=  base
+    }
+    
+    return result
+}
+
+func c20(_ n: Int) -> Bool {
+    guard n >= 2 else { return false }
+    let s = Int(sqrt(Double(n)))
+    if s < 2 { return true }
+    for i in 2...s {
+        if n.isMultiple(of: i) {
+            return false
+        }
+    }
+    return true
+}
+
+
+func c21(_ n: Int) -> (Int?, Int?) {
+    
+    func binaryCount(_ n: Int) -> Int {
+        let s = String(n, radix: 2)
+        
+        let one = s.filter{ $0 == "1" }.count
+        return one
+    }
+    
+    guard n > 0 else {
+        return (nil, nil)
+    }
+    
+    let count = binaryCount(n)
+    
+    var high: Int?
+    for i in n+1...Int.max {
+        if binaryCount(i) == count {
+            high = i
+            break
+        }
+    }
+    var low: Int?
+    
+    for i in (0...n-1).reversed() {
+        if binaryCount(i) == count {
+            low = i
+            break
+        }
+    }
+    
+    return (high, low)
+}

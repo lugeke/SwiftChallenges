@@ -131,6 +131,36 @@ final class SwiftChallengesTests: XCTestCase {
         XCTAssertTrue(c21(1) == (2, nil))
         XCTAssertTrue(c21(3) == (5, nil))
     }
+    
+    func testC22() {
+        XCTAssertEqual(c22(32), 4)
+        XCTAssertEqual(c22(4), 32)
+        XCTAssertEqual(c22(41), 148)
+        XCTAssertEqual(c22(148), 41)
+    }
+    
+    func testC23() {
+        XCTAssertTrue(c23("01010101"))
+        XCTAssertTrue(c23("123456789"))
+        XCTAssertTrue(c23("9223372036854775808"))
+        XCTAssertFalse(c23("1.01"))
+        XCTAssertFalse(c23("㊈"))
+    }
+    
+    func testC24() {
+        XCTAssertEqual(c24("a1b2c3"), 6)
+        XCTAssertEqual(c24("a10b20c30"), 60)
+        XCTAssertEqual(c24("h8ers"), 8)
+        XCTAssertEqual(c24("hello"), nil)
+    }
+    
+    func testC25() {
+        
+        (1...5000).forEach { i in
+            XCTAssertEqual(c25_1(i), Int(sqrt(Double(i))))
+        }
+        XCTAssertEqual(c25_1(16777216), 4096)
+    }
 
 
     static var allTests = [

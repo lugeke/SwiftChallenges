@@ -280,3 +280,63 @@ func c21(_ n: Int) -> (Int?, Int?) {
     
     return (high, low)
 }
+
+
+func c22(_ n: UInt8) -> UInt8 {
+    let s = String(n, radix: 2)
+    let reversed = s.reversed() + String(repeating: "0", count: 8-s.count)
+    
+    return UInt8(reversed, radix: 2)!
+}
+
+func c23(_ str: String) -> Bool {
+    str.allSatisfy {
+        CharacterSet.decimalDigits.contains($0.unicodeScalars.first!)
+//        $0.isNumber
+    }
+}
+
+func c24(_ str: String) -> Int? {
+    
+    let nums = str.components(separatedBy: CharacterSet.decimalDigits.inverted)
+        .filter { $0 != ""}
+    
+    guard !nums.isEmpty else {
+        return nil
+    }
+    
+    return nums.reduce(0) {
+        $0 + Int($1)!
+    }
+}
+
+
+func c25(_ n: Int) -> Int {
+    
+    for i in 1...Int.max {
+        if i*i > n {
+            return i-1
+        }
+    }
+    
+    fatalError()
+}
+
+func c25_1(_ n: Int) -> Int {
+    
+    var low = 1, high = n
+    
+    while low <= high {
+        let mid = low + (high - low) / 2
+        if n < mid*mid {
+            high = mid - 1
+        } else if n < (mid+1)*(mid+1) {
+            return mid
+        } else {
+            low = mid + 1
+        }
+        
+    }
+    
+    fatalError()
+}

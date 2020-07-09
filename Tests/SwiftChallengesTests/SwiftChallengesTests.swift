@@ -161,6 +161,41 @@ final class SwiftChallengesTests: XCTestCase {
         }
         XCTAssertEqual(c25_1(16777216), 4096)
     }
+    
+    func testC26() {
+        XCTAssertEqual(c26(subtract: 5, from: 9), 4)
+        XCTAssertEqual(c26(subtract: 9, from: 5), -4)
+        XCTAssertEqual(c26(subtract: 10, from: 30), 20)
+    }
+    
+    func testC27() {
+        let url = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .appendingPathComponent("input.txt")
+        let x = c27(url: url, last: 5)
+     
+        XCTAssertEqual(x, ["Twelfth Night", "Othello", "Macbeth", "King Lear", "Julius Caesar"])
+    }
+    
+    func testC28() throws{
+        
+        var url = FileManager.default.homeDirectoryForCurrentUser
+        url.appendPathComponent("log.txt", isDirectory: false)
+  
+        print(url.path)
+        try c28(path: url.path, message: "hello")
+    }
+    
+    func testC31() {
+        let source = FileManager.default.homeDirectoryForCurrentUser
+        print(c31(source: source.appendingPathComponent("temp").path,
+            destination: source.appendingPathComponent("temp1").path))
+    }
+    
+    func testC33() {
+        let source = FileManager.default.homeDirectoryForCurrentUser
+        print(c33(path: source.appendingPathComponent("temp1").path))
+    }
 
 
     static var allTests = [

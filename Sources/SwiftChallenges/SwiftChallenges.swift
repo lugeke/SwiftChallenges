@@ -1,4 +1,5 @@
 import Foundation
+import System
 
 func C1(input: String) -> Bool {
     var set: Set<Character> = []
@@ -340,3 +341,110 @@ func c25_1(_ n: Int) -> Int {
     
     fatalError()
 }
+
+func c26(subtract a: Int, from b: Int) -> Int {
+    if b >= a {
+        return (a...b).count - 1
+    } else {
+        return -((b...a).count - 1)
+    }
+    // return b + (~a + 1)
+}
+
+
+func c27(url: URL, last n: Int) -> [String] {
+    let s = try! String(contentsOf: url)
+        .components(separatedBy: .newlines)
+        .reversed()
+        .prefix(n)
+    
+    return .init(s)
+}
+
+
+func c28(path: String, message: String) throws {
+    
+
+    
+//    let fd = try FileDescriptor.open(path, .writeOnly, options: [.create, .append])
+//
+//
+//    try _ = fd.closeAfter {
+//        try fd.writeAll("\(Date()) \(message)".utf8)
+//    }
+    let message = "\(Date()) \(message)\n"
+    if FileManager.default.fileExists(atPath: path) {
+        
+        let fileHandle = try FileHandle(forWritingTo: URL(fileURLWithPath: path))
+        defer { fileHandle.closeFile() }
+        fileHandle.seekToEndOfFile()
+        fileHandle.write(message.data(using: .utf8)!)
+        
+        
+    } else {
+        try message.write(toFile: path, atomically: true, encoding: .utf8)
+    }
+    
+}
+
+func c30(_ path: String) throws -> [String]  {
+    let files = try FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: path, isDirectory: true), includingPropertiesForKeys: nil)
+    var result = [String]()
+    
+    for file in files {
+        if file.pathExtension == "jpg" || file.pathExtension == "jpeg" {
+            guard let date = try? FileManager.default.attributesOfItem(atPath: file.path)[.creationDate] as? Date else {
+                continue
+            }
+            
+            if date >= Date.init(timeIntervalSinceNow: -48*60*60) {
+                result.append(file.lastPathComponent)
+            }
+            
+        }
+    }
+    return result
+}
+
+func c31(source: String, destination: String) -> Bool {
+    let fm = FileManager.default
+    
+    var isDirectory: ObjCBool = false
+    guard fm.fileExists(atPath: source, isDirectory: &isDirectory) && isDirectory.boolValue else {
+        return false
+    }
+  
+    do {
+        try fm.copyItem(atPath: source, toPath: destination)
+    } catch {
+        print("Copy error: \(error.localizedDescription)")
+        return false
+    }
+    return true
+}
+
+func c33(path: String) -> [String] {
+    let fm = FileManager.default
+    
+    let directoryURL = URL(fileURLWithPath: path)
+    
+    guard let files = fm.enumerator(at: directoryURL, includingPropertiesForKeys: nil) else { return [] }
+    
+    var duplicates: Set<String> = []
+    var seen = duplicates
+    
+    for case let file as URL in files {
+        guard !file.hasDirectoryPath else {
+            continue
+        }
+        let filename = file.lastPathComponent
+        if seen.contains(filename) {
+            duplicates.insert(filename)
+        } else {
+            seen.insert(filename)
+        }
+    }
+    
+    return .init(duplicates)
+}
+

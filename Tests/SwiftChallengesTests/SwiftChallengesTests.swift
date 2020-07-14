@@ -196,6 +196,66 @@ final class SwiftChallengesTests: XCTestCase {
         let source = FileManager.default.homeDirectoryForCurrentUser
         print(c33(path: source.appendingPathComponent("temp1").path))
     }
+    
+    func testC36() {
+        let url = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Downloads")
+            .appendingPathComponent("2sum.txt")
+        
+        if let sr = StreamReader(path: url.path, delimiter: "\n") {
+            defer {
+                sr.close()
+            }
+            for line in sr {
+                print(line)
+            }
+        }
+    }
+    
+    
+    func testC37() {
+        XCTAssertEqual([5, 15, 55, 515].c37Count(of: "5"), 6)
+        XCTAssertEqual([5, 15, 55, 515].c37Count(of: "1"), 2)
+        XCTAssertEqual([55555].c37Count(of: "5"), 5)
+        XCTAssertEqual([55555].c37Count(of: "1"), 0)
+    }
+    
+    func testC38() {
+        XCTAssertEqual([1, 2, 3, 4].smallest(3), [1, 2, 3])
+        XCTAssertEqual(["q", "f", "k"].smallest(10), ["f", "k", "q"])
+        XCTAssertEqual([256, 16].smallest(3), [16, 256])
+        XCTAssertEqual([String]().smallest(3), [])
+    }
+    
+    func testC39() {
+        XCTAssertEqual(["a", "abc", "ab"].sortByLength(), ["abc", "ab", "a"])
+        XCTAssertEqual(["paul", "taylor", "adele"].sortByLength(), ["taylor", "adele", "paul"])
+        XCTAssertEqual([String]().sortByLength(), [])
+    }
+    
+    func testC40() {
+        var testArray = Array(1...100)
+        testArray.remove(at: 25)
+        testArray.remove(at: 20)
+        testArray.remove(at: 6)
+        XCTAssertEqual(Set(c40(testArray)), [7, 21, 26])
+    }
+    
+    func testFindNthSmallest() {
+        var ary = Array(1...1000)
+        ary.shuffle()
+        for i in 1...1000 {
+            XCTAssertEqual(ary.findNSmallest(i), i)
+        }
+    }
+    
+    func testC41() {
+        XCTAssertEqual(c41([1,2,3]), 2)
+        XCTAssertEqual(c41([1,2,9]), 2)
+        XCTAssertEqual(c41([1,3,5,7,9]), 5)
+        XCTAssertEqual(c41([1,2,3,4]), 2.5)
+        XCTAssertEqual(c41([] as [Int]), nil)
+    }
 
 
     static var allTests = [

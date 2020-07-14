@@ -448,3 +448,83 @@ func c33(path: String) -> [String] {
     return .init(duplicates)
 }
 
+extension Sequence where Element: BinaryInteger {
+    func c37Count(of n: Character) -> Int {
+        
+        reduce(0) {
+            $0 + String($1).filter { $0 == n }.count
+        }
+    }
+}
+
+extension Collection where Element: Comparable {
+    func smallest(_ n: Int) -> [Element] {
+        let x = sorted()
+        return .init(x.prefix(n))
+    }
+}
+
+
+extension Collection where Element==String {
+    func sortByLength() -> [Element] {
+        sorted{ $0.count > $1.count }
+    }
+}
+
+
+func c40(_ ary: [Int]) -> [Int] {
+    Array(Set(1...100).subtracting(ary))
+}
+
+
+extension Collection where Element: Comparable {
+    func findNSmallest(_ k: Int) -> Element? {
+        guard !isEmpty && (1...count).contains(k) else {
+            return nil
+        }
+        
+        var ary = Array(self)
+        var range = 0..<ary.count
+        var k = k
+        
+        while true {
+            
+            ary[range].swapAt(range.lowerBound, range.randomElement()!)
+              
+            let first = ary[range].first!
+            
+            
+            let i = ary[range.dropFirst()].partition(by: { $0 > first }) - 1 - range.lowerBound + 1
+            
+            ary.swapAt(range.lowerBound, range.lowerBound+i-1)
+            
+            if i == k { return ary[range][range.lowerBound+k-1] }
+            else if k > i {
+                k -= i
+                range = range.dropFirst(i)
+            } else {
+                range = range.prefix(i-1)
+            }
+            
+        }
+        
+        
+    }
+}
+
+
+func c41(_ ary: [Int]) -> Double? {
+    let count = ary.count
+    guard count > 0 else {
+        return nil
+    }
+    let median: Int
+    if count % 2 == 0 {
+        median = ary.findNSmallest(count/2)! + ary.findNSmallest(count/2+1)!
+        
+    } else {
+        median =  ary.findNSmallest(count/2+1)! * 2
+    }
+    
+    return Double(median) / 2
+}

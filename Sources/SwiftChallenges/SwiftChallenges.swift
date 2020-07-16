@@ -528,3 +528,33 @@ func c41(_ ary: [Int]) -> Double? {
     
     return Double(median) / 2
 }
+
+
+extension Collection where Element: Equatable {
+    func firstIndexC42(of e: Element) -> Index? {
+        
+        var i = startIndex
+        
+        while i != endIndex {
+            if self[i] == e {
+                return i
+            }
+            formIndex(after: &i)
+        }
+        return nil
+    }
+}
+
+
+func c43() -> String {
+    var result = ""
+    let list = LinkList("abcdefghijklmnopqrstuvwxyz")
+    list.traverse {
+        if result == "" {
+            result.append($0)
+        } else {
+            result += " \($0)"
+        }
+    }
+    return result
+}

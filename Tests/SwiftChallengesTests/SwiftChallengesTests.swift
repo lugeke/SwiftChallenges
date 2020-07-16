@@ -256,6 +256,19 @@ final class SwiftChallengesTests: XCTestCase {
         XCTAssertEqual(c41([1,2,3,4]), 2.5)
         XCTAssertEqual(c41([] as [Int]), nil)
     }
+    
+    func testC42() {
+        XCTAssertEqual([1,2,3].firstIndexC42(of: 1), 0)
+        XCTAssertEqual([1,2,3].firstIndexC42(of: 2), 1)
+        XCTAssertEqual([1,2,3].firstIndexC42(of: 3), 2)
+        XCTAssertEqual([1,2,4].firstIndexC42(of: 3), nil)
+    }
+    
+    
+    func testC43() {
+
+        XCTAssertEqual(c43(), "abcdefghijklmnopqrstuvwxyz".map { String.init($0) }.joined(separator: " "))
+    }
 
 
     static var allTests = [

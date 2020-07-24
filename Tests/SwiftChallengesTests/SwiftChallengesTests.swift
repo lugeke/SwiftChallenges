@@ -269,7 +269,135 @@ final class SwiftChallengesTests: XCTestCase {
 
         XCTAssertEqual(c43(), "abcdefghijklmnopqrstuvwxyz".map { String.init($0) }.joined(separator: " "))
     }
+    
+    func testC51() {
+        let alphabet = "abcdefghijklmnopqrstuvwxyz"
+        let list = LinkList(alphabet).reversed()
+        
+        var result = ""
+        list.traverse { result += "\($0)" }
+        XCTAssertEqual(result, String(alphabet.reversed()))
+    }
+    
+    func testC44() {
+        XCTAssertEqual(([1,2,3,4,5] as LinkList).middlePoint(), 3)
+        XCTAssertEqual(([1,2,3,4] as LinkList).middlePoint(), 2)
+        XCTAssertEqual(([] as LinkList<Int>).middlePoint(), nil)
+        XCTAssertEqual(([1] as LinkList<Int>).middlePoint(), 1)
+        XCTAssertEqual((LinkList("abcdefghijklmnopqrstuvwxyz")).middlePoint(), "m")
+    }
+    
+    func testBST() {
+        var bst: BinarySearchTree<Int> = nil
+        bst.insert(5)
+        bst.insert(1)
+        bst.insert(2)
+        
+        bst.inorder {
+            print($0)
+        }
+        
+        var bst1 = bst
+        bst1.insert(6)
+        
+        print(bst.elements)
+        print(bst1.elements)
+        
+    }
+    
+    func testC47() {
+        XCTAssertEqual([1, 2, 3].minC47(), 1)
+        XCTAssertEqual(["q", "f", "k"].minC47(), "f")
+        XCTAssertEqual([4096, 256, 16].minC47(), 16)
+        XCTAssertNil([String]().minC47())
+    }
+    
+    func testC54() {
+        var bst: BinarySearchTree = [2, 1, 3]
+        XCTAssertTrue(bst.isBalanced)
+        bst = [5, 1, 7, 6, 2, 1, 9]
+        XCTAssertTrue(bst.isBalanced)
+        bst = [5, 1, 7, 6, 2, 1, 9, 1]
+        XCTAssertTrue(bst.isBalanced)
+        bst = [5, 1, 7, 6, 2, 1, 9, 1, 3]
+        XCTAssertFalse(bst.isBalanced)
+        bst = [50, 25, 100, 26, 101, 24, 99]
+        XCTAssertTrue(bst.isBalanced)
+        var bst1: BinarySearchTree  = ["k", "t", "d", "a", "z", "m", "f"]
+        XCTAssertTrue(bst1.isBalanced)
+        bst = [1]
+        XCTAssertTrue(bst.isBalanced)
+      
 
+        let bst2: BinarySearchTree<Character> = []
+        XCTAssertTrue(bst2.isBalanced)
+        
+        bst = [1, 2, 3, 4, 5]
+        XCTAssertFalse(bst.isBalanced)
+        bst = [10, 5, 4, 3, 2, 1, 11, 12, 13, 14, 15]
+        XCTAssertFalse(bst.isBalanced)
+        bst1 = ["f", "d", "c", "e", "a", "b"]
+        XCTAssertFalse(bst.isBalanced)
+    }
+    
+    func testC49() {
+        XCTAssertEqual(c49(1, 2, 2, 3, 3, 4), 5)
+        XCTAssertEqual(c49(5, 5, 5, 12, 12), 12)
+        XCTAssertEqual(c49(1, 1, 2, 2, 3, 3, 4, 4), 10)
+    }
+    
+    func testC50() {
+        XCTAssertEqual(c50([0, 1, 1, -1, 2, 3, 1]), 4...6)
+        XCTAssertEqual(c50([10, 20, 30, -10, -20, 10, 20]), 0...2)
+        XCTAssertEqual(c50([1, -1, 2, -1]), 2...2)
+        XCTAssertEqual(c50([2, 0, 2, 0, 2]), 0...0)
+        XCTAssertNil(c50([Int]()))
+    }
+    
+    func testC52() {
+        XCTAssertEqual([1, 2, 3].sum(), 6)
+        XCTAssertEqual([1.0, 2.0, 3.0].sum(), 6.0)
+        XCTAssertEqual(([1.0, 2.0, 3.0] as [Float]).sum(), 6.0)
+    }
+    
+    
+    func testC55() {
+        
+        XCTAssertEqual([12, 5, 4, 9, 3, 2, 1].bubbleSorted(), [1, 2, 3, 4, 5, 9, 12])
+        XCTAssertEqual(["f", "a", "b"].bubbleSorted(), ["a", "b", "f"])
+        XCTAssertEqual([String]().bubbleSorted(), [])
+    }
+    
+    func testC56() {
+        
+        XCTAssertEqual([12, 5, 4, 9, 3, 2, 1].insertionSorted(), [1, 2, 3, 4, 5, 9, 12])
+        XCTAssertEqual(["f", "a", "b"].insertionSorted(), ["a", "b", "f"])
+        XCTAssertEqual([String]().insertionSorted(), [])
+    }
+    
+    func test58() {
+        XCTAssertTrue(c58("()"))
+        XCTAssertTrue(c58("([])"))
+        XCTAssertTrue(c58("(([])(<{}>))"))
+        XCTAssertTrue(c58("([]{}<[{}]>)"))
+        XCTAssertTrue(c58(""))
+        
+        XCTAssertFalse(c58("}{"))
+        XCTAssertFalse(c58("([)]"))
+        XCTAssertFalse(c58("([)"))
+        XCTAssertFalse(c58("(["))
+        XCTAssertFalse(c58("[<<<{}>>]"))
+        XCTAssertFalse(c58("hello"))
+    }
+    
+    func testC60() {
+        XCTAssertTrue(c60([["X", "", "O"], ["", "X", "O"], ["", "", "X"]]))
+        XCTAssertTrue(c60([["X", "", "O"], ["X", "", "O"], ["X", "", ""]]))
+        XCTAssertTrue(c60([["", "X", ""], ["O", "X", ""], ["O", "X", ""]]))
+        
+        XCTAssertFalse(c60([["", "X", ""], ["O", "X", ""], ["O", "", "X"]]))
+        XCTAssertFalse(c60([["", "", ""], ["", "", ""], ["", "", ""]]))
+    }
 
     static var allTests = [
         ("testC1", testC1),

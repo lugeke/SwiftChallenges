@@ -1,5 +1,6 @@
 import Foundation
 import System
+import Algorithms
 
 func C1(input: String) -> Bool {
     var set: Set<Character> = []
@@ -11,16 +12,16 @@ func C1(input: String) -> Bool {
 }
 
 func C2(input: String) -> Bool {
-//    var i = input.startIndex
-//    var j = input.index(before: input.endIndex)
-//
-//    while i < j {
-//        if input[i].lowercased() != input[j].lowercased() { return false }
-//        input.formIndex(after: &i)
-//        input.formIndex(before: &j)
-//    }
-//
-//    return true
+    //    var i = input.startIndex
+    //    var j = input.index(before: input.endIndex)
+    //
+    //    while i < j {
+    //        if input[i].lowercased() != input[j].lowercased() { return false }
+    //        input.formIndex(after: &i)
+    //        input.formIndex(before: &j)
+    //    }
+    //
+    //    return true
     
     let half = input.count / 2
     
@@ -36,17 +37,17 @@ func C3(_ s1: String,_ s2: String) -> Bool {
 extension String {
     func fuzzyContains(_ other: String) -> Bool {
         guard !other.isEmpty else { return true }
-
+        
         var str = self[...]
-
+        
         while let firstMatch = str.firstIndex(where: { $0.lowercased() == other.first!.lowercased()}) {
             if str[firstMatch...].prefix(other.count).lowercased() == other.lowercased() { return true }
             str = str.dropFirst()
         }
-
+        
         return false
         
-//        range(of: other, options: .caseInsensitive) != nil
+        //        range(of: other, options: .caseInsensitive) != nil
     }
 }
 
@@ -81,7 +82,7 @@ func C7(_ str: String) -> String {
         }
     }
     
-//    return str.replacingOccurrences(of: " +", with: " ", options: .regularExpression, range: nil)
+    //    return str.replacingOccurrences(of: " +", with: " ", options: .regularExpression, range: nil)
 }
 
 
@@ -105,9 +106,9 @@ func C9(_ str: String) -> Bool {
     }
     return dict.allSatisfy{ $0 }
     
-//    let set = Set(str.lowercased())
-//    let letters = set.filter { $0 >= "a" && $0 <= "z" }
-//    return letters.count == 26
+    //    let set = Set(str.lowercased())
+    //    let letters = set.filter { $0 >= "a" && $0 <= "z" }
+    //    return letters.count == 26
 }
 
 func C10(_ str: String) -> (Int, Int) {
@@ -179,7 +180,7 @@ func C13(_ str: String) -> String {
         }
         
     }
-  
+    
     result.append("\(previous)\(count)")
     
     return result
@@ -229,7 +230,7 @@ func c18(base: Int, pow: Int) -> Int {
     result *= result
     
     if pow % 2 == 1 {
-       result *=  base
+        result *=  base
     }
     
     return result
@@ -293,7 +294,7 @@ func c22(_ n: UInt8) -> UInt8 {
 func c23(_ str: String) -> Bool {
     str.allSatisfy {
         CharacterSet.decimalDigits.contains($0.unicodeScalars.first!)
-//        $0.isNumber
+        //        $0.isNumber
     }
 }
 
@@ -364,14 +365,14 @@ func c27(url: URL, last n: Int) -> [String] {
 
 func c28(path: String, message: String) throws {
     
-
     
-//    let fd = try FileDescriptor.open(path, .writeOnly, options: [.create, .append])
-//
-//
-//    try _ = fd.closeAfter {
-//        try fd.writeAll("\(Date()) \(message)".utf8)
-//    }
+    
+    //    let fd = try FileDescriptor.open(path, .writeOnly, options: [.create, .append])
+    //
+    //
+    //    try _ = fd.closeAfter {
+    //        try fd.writeAll("\(Date()) \(message)".utf8)
+    //    }
     let message = "\(Date()) \(message)\n"
     if FileManager.default.fileExists(atPath: path) {
         
@@ -413,7 +414,7 @@ func c31(source: String, destination: String) -> Bool {
     guard fm.fileExists(atPath: source, isDirectory: &isDirectory) && isDirectory.boolValue else {
         return false
     }
-  
+    
     do {
         try fm.copyItem(atPath: source, toPath: destination)
     } catch {
@@ -490,7 +491,7 @@ extension Collection where Element: Comparable {
         while true {
             
             ary[range].swapAt(range.lowerBound, range.randomElement()!)
-              
+            
             let first = ary[range].first!
             
             
@@ -557,4 +558,187 @@ func c43() -> String {
         }
     }
     return result
+}
+
+
+extension LinkList {
+    
+    func middlePoint() -> Element? {
+        
+        func traverse(current: LinkList, ahead: LinkList) -> Element? {
+            
+            switch ahead {
+            case .tail:
+                return current.value
+            case let .node(_, next: next):
+                return traverse(current: current.next(), ahead: next.next())
+            }
+            
+        }
+        
+        
+        return traverse(current: self, ahead: self.next().next())
+        
+    }
+}
+
+extension Collection {
+    
+    func mapC46<T>(_ f: (Element) throws -> T ) rethrows ->  [T] {
+        var result: [T] = []
+        
+        for x in self {
+            result.append(try f(x))
+        }
+        
+        return result
+    }
+}
+
+
+extension Collection where Element: Comparable {
+    func minC47() -> Element? {
+        guard let first = first else {
+            return nil
+        }
+        
+        return dropFirst().reduce(first) { Swift.min($0, $1)}
+    }
+}
+
+extension Sequence where Element: Hashable {
+    var frequency: [Element: Int] {
+        Dictionary(map{ ($0,1)}, uniquingKeysWith:+)
+    }
+}
+
+
+func c49(_ n: Int...) -> Int? {
+    guard !n.isEmpty else {
+        return nil
+    }
+    let f = n.frequency
+    return f.reduce(0) { $0 + ($1.value % 2 == 0 ? $1.key : 0) }
+}
+
+func c50(_ ary: [Int]) -> ClosedRange<Int>? {
+    
+    let x = ary.split(omittingEmptySubsequences: false) {
+        $0 <= 0
+    }
+    
+    var result: ClosedRange<Int>?
+    var max = 0, index = 0
+    for i in  x {
+        let sum = i.reduce(0, +)
+        if sum > max {
+            max = sum
+            result = index...index+i.count-1
+        }
+        
+        index += i.count + 1
+        
+    }
+    
+    return result
+    
+}
+
+extension Sequence where Element: AdditiveArithmetic {
+    func sum() -> Element {
+        reduce(.zero, +)
+    }
+}
+
+
+extension Array where Element: Comparable {
+    mutating func bubbleSort() {
+        guard !isEmpty else {
+            return
+        }
+        
+        for i in 0..<count-1{
+            for j in 0..<count-1-i {
+                if self[j] > self[j+1] {
+                    self.swapAt(j, j+1)
+                }
+            }
+        }
+        
+    }
+    
+    func bubbleSorted() -> [Element] {
+        var r = self
+        r.bubbleSort()
+        return r
+        
+    }
+    
+}
+
+extension Array where Element: Comparable {
+    mutating func insertionSort() {
+        guard !isEmpty else {
+            return
+        }
+        
+        for i in 1..<count{
+            var j = i
+            while j > 0 && self[j] < self [j-1] {
+                swapAt(j, j-1)
+                j -= 1
+            }
+        }
+        
+    }
+    
+    func insertionSorted() -> [Element] {
+        var r = self
+        r.insertionSort()
+        return r
+        
+    }
+    
+}
+
+func c58(_ str: String) -> Bool {
+    var stack = [Character]()
+    
+    for char in str {
+        switch char {
+        case "(", "[", "{", "<":
+            stack.append(char)
+        case ")":
+            guard stack.popLast() == "(" else { return false }
+        case "]":
+            guard stack.popLast() == "[" else { return false }
+        case "}":
+            guard stack.popLast() == "{" else { return false }
+        case ">":
+            guard stack.popLast() == "<" else { return false }
+        default:
+            return false
+            
+        }
+    }
+    
+    return stack.isEmpty
+}
+
+func c60(_ board: [[String]]) -> Bool {
+    
+    for i in 0..<3 {
+        let row = board[i][0..<3]
+        if row.allSatisfy({$0 == "X"}) || row.allSatisfy({$0 == "O"}) { return true}
+        let col = board[0..<3].map(\.[i])
+        if col.allSatisfy({$0 == "X"}) || col.allSatisfy({$0 == "O"}) { return true}
+    }
+    
+    // two diaganol
+    let d1 = (0..<2).map{ ($0, $0)}
+    if d1.allSatisfy({board[$0.0][$0.1] == "X"}) || d1.allSatisfy({board[$0.0][$0.1] == "O"}) { return true}
+    let d2 = (0..<2).map{ ($0, 2-$0)}
+    if d2.allSatisfy({board[$0.0][$0.1] == "X"}) || d2.allSatisfy({board[$0.0][$0.1] == "O"}) { return true}
+    
+    return false
 }

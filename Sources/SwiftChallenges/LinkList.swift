@@ -12,7 +12,32 @@ indirect enum LinkList<Element> {
     case tail
     case node(value: Element, next: LinkList)
     
+    
+    func next() -> LinkList {
+        switch self {
+        case .tail:
+            return .tail
+        case .node(value: _, next: let next):
+            return next
+        }
+    }
+    
+    var value: Element? {
+        switch self {
+        case .tail:
+            return nil
+        case .node(value: let v, next: _):
+            return v
+        }
+    }
+    
+    /// Return a new list by prepending a node with value `x` to the
+    /// front of a list.
+    func cons(_ x: Element) -> LinkList {
+        return .node(value: x, next: self)
+    }
 }
+
 
 extension LinkList: ExpressibleByNilLiteral {
     
@@ -51,3 +76,22 @@ extension LinkList {
         }
     }
 }
+
+
+extension LinkList: Equatable where Element: Equatable {}
+
+
+extension LinkList {
+    func reversed() -> LinkList {
+        
+        var r = LinkList.tail
+        self.traverse {
+            r = r.cons($0)
+        }
+        
+        return r
+    }
+    
+}
+
+

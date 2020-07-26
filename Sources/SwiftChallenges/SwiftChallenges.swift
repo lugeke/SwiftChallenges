@@ -832,21 +832,18 @@ func c64(n: Int) -> [[String]] {
             result.append(ary)
         }
         
-        for i in n..<ary.count {
+        outer: for i in n..<ary.count {
             ary.swapAt(n, i)
+            defer {
+                ary.swapAt(n, i)
+            }
             // check queens not in diagonal
-            var conflict = false
             for j in 0..<n {
                 if ary[j] - ary[n] == j - n || ary[j] - ary[n] == n - j {
-                    conflict = true
-                    break
+                    continue outer
                 }
             }
-            if !conflict {
-                permutations(&ary, n: n+1)
-            }
-            
-            ary.swapAt(n, i)
+            permutations(&ary, n: n+1)
         }
         
     }

@@ -742,3 +742,124 @@ func c60(_ board: [[String]]) -> Bool {
     
     return false
 }
+
+
+func c61(upTo: Int) -> [Int] {
+    
+    guard upTo > 1 else {
+        return []
+    }
+    
+    var seive = Array(repeating: true, count: upTo)
+    
+    for i in 2...Int(sqrt(Double(upTo))) {
+        if seive[i] {
+            for j in stride(from: i*i, to: upTo, by: i) {
+                seive[j] = false
+            }
+        }
+    }
+    
+    return (2..<upTo).reduce(into: [Int]()) { if seive[$1] { $0.append($1)}}
+    
+
+}
+
+
+func c63(fill n: Int, in grid: [[Int]], at point: (Int, Int)) -> [[Int]] {
+    let rows = grid.count
+    guard rows > 0 else {
+        return []
+    }
+    let cols = grid[0].count
+    guard cols > 0 else {
+        return []
+    }
+    
+    var visited: [[Bool]] = .init(repeating: .init(repeating: false, count: cols), count: rows)
+    
+    let x = grid[point.0][point.1]
+    var result = grid
+    
+    /// - Invariant: start value equal to x
+    func dfs(start: (Int, Int)) {
+        let row = start.0
+        let col = start.1
+        result[row][col] = n
+        visited[row][col] = true
+        
+        // up
+        if row - 1 >= 0 && !visited[row-1][col] && grid[row-1][col] == x {
+            dfs(start: (row-1, col))
+        }
+        // right
+        if col + 1 < cols && !visited[row][col+1] && grid[row][col+1] == x {
+            dfs(start: (row, col+1))
+        }
+        // down
+        if row + 1 < rows && !visited[row+1][col] && grid[row+1][col] == x {
+            dfs(start: (row+1, col))
+        }
+        // left
+        if col - 1 >= 0 && !visited[row][col-1] && grid[row][col-1] == x {
+            dfs(start: (row, col-1))
+        }
+    }
+    
+    dfs(start: point)
+    
+    return result
+}
+
+
+func c64(n: Int) -> [[String]] {
+    
+    
+    var result = [[Int]]()
+    
+    // positions[i]  reprensent ith row queen's col position
+    var positions = [Int](unsafeUninitializedCapacity: n) { buffer, count in
+        for i in 0..<n {
+            buffer[i] = i
+        }
+        count = n
+    }
+    
+    func permutations(_ ary: inout [Int], n: Int) {
+        
+        
+        if n == ary.count {
+            result.append(ary)
+        }
+        
+        for i in n..<ary.count {
+            ary.swapAt(n, i)
+            // check queens not in diagonal
+            var conflict = false
+            for j in 0..<n {
+                if ary[j] - ary[n] == j - n || ary[j] - ary[n] == n - j {
+                    conflict = true
+                    break
+                }
+            }
+            if !conflict {
+                permutations(&ary, n: n+1)
+            }
+            
+            ary.swapAt(n, i)
+        }
+        
+    }
+    
+    permutations(&positions, n: 0)
+    
+    return result.map { solution in
+        
+        solution.map {
+            var s = Array(repeating: ".", count: n)
+            s[$0] = "Q"
+            return s.joined()
+        }
+        
+    }
+}

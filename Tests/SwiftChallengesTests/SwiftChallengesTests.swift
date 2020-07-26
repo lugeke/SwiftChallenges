@@ -1,6 +1,6 @@
 import XCTest
 @testable import SwiftChallenges
-
+import GameKit
 final class SwiftChallengesTests: XCTestCase {
     func testC1() {
         XCTAssertEqual(C1(input: "No duplicates"), true)
@@ -398,6 +398,40 @@ final class SwiftChallengesTests: XCTestCase {
         XCTAssertFalse(c60([["", "X", ""], ["O", "X", ""], ["O", "", "X"]]))
         XCTAssertFalse(c60([["", "", ""], ["", "", ""], ["", "", ""]]))
     }
+    
+    func testC61() {
+        XCTAssertEqual(c61(upTo: 10), [2,3,5,7])
+        XCTAssertEqual(c61(upTo: 11), [2,3,5,7])
+        XCTAssertEqual(c61(upTo: 12), [2,3,5,7,11])
+        print(c61(upTo: 100))
+    }
+    
+    func testC63() {
+        let random = GKMersenneTwisterRandomSource(seed: 1)
+        let grid = (1...10).map{ _ in (1...10).map { _ in
+            Int(random.nextInt(upperBound: 2))
+        }}
+        
+        let answer = [[5, 5, 5, 5, 5, 1, 5, 5, 1, 1],
+                      [5, 1, 1, 5, 5, 5, 5, 1, 0, 0],
+                      [5, 1, 5, 5, 5, 5, 5, 5, 1, 1],
+                      [1, 0, 1, 5, 5, 1, 1, 5, 5, 5],
+                      [1, 0, 1, 5, 1, 1, 1, 1, 1, 5],
+                      [1, 0, 1, 1, 5, 5, 5, 5, 5, 5],
+                      [0, 0, 0, 0, 1, 1, 1, 5, 1, 1],
+                      [1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
+                      [1, 1, 0, 1, 1, 1, 1, 0, 0, 0],
+                      [0, 1, 1, 0, 0, 1, 0, 1, 1, 1]]
+        let g = c63(fill: 5, in: grid, at: (0, 2))
+        XCTAssertEqual(g, answer)
+    }
+    
+    func testC64() {
+        print(c64(n: 4))
+        XCTAssertEqual(c64(n: 8).count, 92)
+        XCTAssertEqual(c64(n: 10).count, 724)
+    }
+    
 
     static var allTests = [
         ("testC1", testC1),
